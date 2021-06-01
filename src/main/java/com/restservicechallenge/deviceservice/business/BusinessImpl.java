@@ -2,6 +2,8 @@ package com.restservicechallenge.deviceservice.business;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,7 @@ public class BusinessImpl implements Business {
 	}
 
 	@Override
+	@Transactional
 	public DeviceEntity addDevice(DeviceEntity newDevice) {
 		return repository.save(newDevice);
 	}
@@ -32,6 +35,7 @@ public class BusinessImpl implements Business {
 	}
 
 	@Override
+	@Transactional
 	public Page<DeviceEntity> allDevices(Optional<Integer> page, Optional<String> sortBy, Optional<String> brand) {
 		Pageable requestedPage=PageRequest.of(page.orElse(0),5,Sort.Direction.ASC, sortBy.orElse("id"));
 		if(brand.isPresent()) 
@@ -40,14 +44,15 @@ public class BusinessImpl implements Business {
 	}
 	
 	@Override
+	@Transactional
 	public DeviceEntity updateDevice(DeviceEntity newDevice, Long id) {
-		return repository.findById(id) //
+		return repository.findById(id) 
 				.map(device -> {
 					device.setName(newDevice.getName());
 					device.setBrand(newDevice.getBrand());
 					device.setCreationTime(newDevice.getCreationTime());
 					return repository.save(device);
-				}) //
+				}) 
 				.orElseGet(() -> {
 					newDevice.setId(id);
 					return repository.save(newDevice);
@@ -55,6 +60,7 @@ public class BusinessImpl implements Business {
 	}
 
 	@Override
+	@Transactional
 	public void deleteDevice(Long id) {
 		repository.deleteById(id);
 	}

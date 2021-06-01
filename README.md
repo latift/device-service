@@ -4,7 +4,11 @@ Code is available on [github](https://github.com/latift/device-service) along wi
 
 ## Prerequisites
 
-* Java(11 Version), Maven, Git, Lombok enabled IDE(Optional), Postman(Optional)
+* Java(11 Version), 
+* Maven(Apache Maven 3.8.1)
+* Git 
+* Lombok enabled IDE(Optional)
+* Postman(Optional)
 
 ## Clone the Source Code
 
@@ -70,16 +74,18 @@ Let's run the app locally first to test that it all works.
     $ java -jar target/device-service-0.0.1-SNAPSHOT.jar
 
 ## Test The App
-You can test th app via curl, postman or browser
-### Test it By CURL 
+* ATTENTION: Below tests were run in linux environment. Not tried in other environments. May or may not run.
+* You can test th app via curl, postman or browser
+### Test By CURL (Linux Environment)
+	
 	Add device:  	
-	curl -X POST localhost:8080/devices -H 'Content-type:application/json' -d '{"name": "Sim99", "brand": "truphone", "creationTime": "2019-04-09T23:15:45.345875+03:00"}'
+	curl -X POST localhost:8080/devices -H 'Content-type:application/json' -d '{"name": "Sim99", "brand": "truphone","creationTime": "2019-04-09T23:15:45.345875+03:00"}'
 	
 	Get device by identifier:  
-	curl -v localhost:8080/devices/1 | json_pp
+	curl -v localhost:8080/devices/1
 	
 	List all devices
-	curl -v localhost:8080/devices | json_pp
+	curl -v localhost:8080/devices
 	
 	Update device (full and partial)
 	curl -X PUT localhost:8080/devices/1 -H 'Content-type:application/json' -d '{"name": "Sim1_Updated", "brand": "truphone", "creationTime": "2019-04-09T23:15:45.345875+03:00"}'
@@ -88,15 +94,28 @@ You can test th app via curl, postman or browser
 	curl -X DELETE localhost:8080/devices/1
 	
 	Search device by brand
-	curl -v localhost:8080/devices?brand=truphone | json_pp
+	curl -v localhost:8080/devices?brand=truphone
 
-### Test it By Postman 
+### Test By Postman 
 Be sure that app is running locally before running the below steps.
 You should import Device-Server-Rest-API-Postman.json file to Postman.
 You can test it by running it in the order you want. 
 
-### Test it By Browser
+### Test By Browser
 Click the links below for test purposes.
 *	[First Five Device](http://localhost:8080/devices)
 *	[First Page of The BrandX Devices ](http://localhost:8080/devices?brand=BrandX&page=0)
+
+## Used Frameworks And Architecture
+* Developed with a three-layer (Controller, Service Layer, Data Layer) architecture.
+* Developed with Java, Spring Boot and JPA. H2 database is used for the sake of simplicity. 
+* Spring Hateos(Hypermedia as the Engine of Application State) is being used for a better Rest API experience. 
+* For testing, junit and mockito frameworks are being used.
+
+## What else Should Be Added For A Better Rest Api
+  The following topics were not included in the scope due to time constraints and because they were not among the requirements in the technology document. But in a production Rest API these futures should be implemented. 
+* Security : Rest services should be protected against attacks with jwt. For more secure communication, the services should be provided with HTTPs protocol.
+* Cache Layer : Redis-like cache structures should be used for much faster and more performance services. 
+* Versioning : Version change is the most critical issue in Public Rest API services. When a V2.0 version of a service is offered, the v1.0 version should continue to be supported for a long time. In order to offer two versions of the same service at the same time, the version name must be passed in the uri information. Not done here for the sake of simplicity.
+
 	 

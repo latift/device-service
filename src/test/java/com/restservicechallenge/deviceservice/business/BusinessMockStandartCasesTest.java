@@ -1,7 +1,6 @@
 package com.restservicechallenge.deviceservice.business;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 import java.time.OffsetDateTime;
@@ -9,7 +8,6 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,7 +23,7 @@ import com.restservicechallenge.deviceservice.data.DeviceRepository;
 import com.restservicechallenge.deviceservice.entity.DeviceEntity;
 
 @ExtendWith(MockitoExtension.class)
-public class BusinessMockTest {
+public class BusinessMockStandartCasesTest {
 
 	@InjectMocks
 	BusinessImpl business;
@@ -41,26 +39,14 @@ public class BusinessMockTest {
 	}
 	
 	@Test
-	void testAlreadyThereDeviceAdd() {
-		
-		//fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetDeviceItemExists() {
+	void testGetDeviceItemById() {
 		when(deviceRepositoryMock.findById((long) 1)).thenReturn(Optional.of(new DeviceEntity("Sim1", "Ericcson", OffsetDateTime.of(2019, 4, 9, 20, 15, 45, 345875000, ZoneOffset.of("+00:00")))));
-		
 		assertEquals(new DeviceEntity("Sim1", "Ericcson", OffsetDateTime.of(2019, 4, 9, 20, 15, 45, 345875000, ZoneOffset.of("+00:00"))), business.getDevice((long) 1).get());
 	}
 	
-	@Test
-	void testGetDeviceItemDoesntExists() {
-		when(deviceRepositoryMock.findById((long) 1)).thenReturn(Optional.empty());
-		assertEquals(true, business.getDevice((long) 1).isEmpty());
-	}
 
 	@Test
-	void testAllDevicesFirstPage() {
+	void testListAllDevicesFirstPage() {
 		List<DeviceEntity> devices = new ArrayList<>();
 		devices.add(new DeviceEntity("name1", "BrandX", OffsetDateTime.of(2019, 4, 9, 20, 15, 45, 345875000, ZoneOffset.of("+00:00"))));
 		devices.add(new DeviceEntity("name2", "BrandY", OffsetDateTime.of(2019, 4, 9, 20, 15, 45, 345875000, ZoneOffset.of("+00:00"))));
@@ -69,40 +55,31 @@ public class BusinessMockTest {
 		when(deviceRepositoryMock.findAll(requestedPage)).thenReturn(new PageImpl<DeviceEntity>(devices));
 		assertEquals(3, business.allDevices(Optional.empty(), Optional.empty(), Optional.empty()).getSize());
 	}
-	
+
+
 	@Test
-	void testAllDevicesNonexistingPage() {
-		when(deviceRepositoryMock.findAllByBrand("BrandX",PageRequest.of(5,5,Sort.Direction.ASC, "id"))).thenReturn(new PageImpl<DeviceEntity>(new ArrayList<DeviceEntity>()));
-		assertEquals(0, business.allDevices(Optional.of(5),Optional.of("id"),Optional.of("BrandX")).getSize());
+	void testUpdateDevice() {
+		when(deviceRepositoryMock.save(Mockito.any(DeviceEntity.class))).thenAnswer(i -> i.getArguments()[0]);
+		DeviceEntity updatedDevice = business.updateDevice(new DeviceEntity("Sim1_Updated_Name", "Ericcson_Updated_Brand", OffsetDateTime.of(2020, 1, 1, 20, 15, 45, 345875000, ZoneOffset.of("+00:00"))),(long) 1);
+		assertEquals(updatedDevice.getName(), "Sim1_Updated_Name");	
+		assertEquals(updatedDevice.getBrand(), "Ericcson_Updated_Brand");
 	}
 	
+
 	@Test
-	void testGetABrandDevicesFirstPage() {
-		//fail("Not yet implemented");
-	}
-	
-	@Test
-	void testGetABrandDevicesNonExistingFirstPage() {
+	void testDeleteDevice() {
 		//fail("Not yet implemented");
 	}
 
-	@Test
-	void testUpdateExistingDevice() {
-		//fail("Not yet implemented");
-	}
 	
 	@Test
-	void testTryToUpdateNonExistingDevice() {
-		//fail("Not yet implemented");
+	void testListBrandDevice() {
+		List<DeviceEntity> devices = new ArrayList<>();
+		devices.add(new DeviceEntity("name1", "BrandY", OffsetDateTime.of(2019, 4, 9, 20, 15, 45, 345875000, ZoneOffset.of("+00:00"))));
+		devices.add(new DeviceEntity("name2", "BrandY", OffsetDateTime.of(2019, 4, 9, 20, 15, 45, 345875000, ZoneOffset.of("+00:00"))));
+		devices.add(new DeviceEntity("name3", "BrandY", OffsetDateTime.of(2019, 4, 9, 20, 15, 45, 345875000, ZoneOffset.of("+00:00"))));
+		when(deviceRepositoryMock.findAllByBrand("BrandY",PageRequest.of(0,5,Sort.Direction.ASC, "id"))).thenReturn(new PageImpl<DeviceEntity>(devices));
+		assertEquals("name1", business.allDevices(Optional.of(0), Optional.of("id"), Optional.of("BrandY")).get().findFirst().get().getName());
 	}
-
-	@Test
-	void testDeleteExistingDevice() {
-		//fail("Not yet implemented");
-	}
-
-	@Test
-	void testTryToDeleteNotExistingDevice() {
-		//fail("Not yet implemented");
-	}
+	
 }

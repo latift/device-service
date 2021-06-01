@@ -24,12 +24,10 @@ public class DeviceModelAssembler
 	public DeviceModel toModel(DeviceEntity entity) 
 	{
 		DeviceModel deviceModel = instantiateModel(entity);
-		
 		deviceModel.add(linkTo(
 				methodOn(DeviceController.class)
 				.getDevice(entity.getId()))
 				.withSelfRel());
-		
 		deviceModel.setId(entity.getId());
 		deviceModel.setBrand(entity.getBrand());
 		deviceModel.setCreationTime(entity.getCreationTime());
@@ -41,9 +39,7 @@ public class DeviceModelAssembler
 	public CollectionModel<DeviceModel> toCollectionModel(Iterable<? extends DeviceEntity> entities) 
 	{
 		CollectionModel<DeviceModel> deviceModels = super.toCollectionModel(entities);
-		
 		return deviceModels;
 	}
-
 
 }

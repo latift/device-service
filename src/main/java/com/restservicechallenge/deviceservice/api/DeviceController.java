@@ -32,7 +32,7 @@ public class DeviceController {
 
 	private final Business business;
 	
-	private DeviceModelAssembler deviceModelAssembler;
+	private final DeviceModelAssembler deviceModelAssembler;
 	
 	private final PagedResourcesAssembler<DeviceEntity> pagedResourcesAssembler;
 
@@ -44,44 +44,36 @@ public class DeviceController {
 	
 	@PostMapping("/devices")
 	public DeviceEntity addDevice(@RequestBody DeviceEntity newDevice) {
-	
 		return business.addDevice(newDevice);
 	}
 	
 	@GetMapping("/devices/{id}")
 	public EntityModel<DeviceEntity> getDevice(@PathVariable Long id) {
-
 		DeviceEntity device = business.getDevice(id) //
 				.orElseThrow(() -> new DeviceNotFoundException(id));
-
 		return EntityModel.of(device, //
 				linkTo(methodOn(DeviceController.class).getDevice(id)).withSelfRel());
 				//linkTo(methodOn(DeviceController.class).allDevices()).withRel("devices"));
 	}
 
 	@GetMapping("/devices")
-    public ResponseEntity<PagedModel<DeviceModel>> allDevices(@RequestParam("page") Optional<Integer> page ,@RequestParam("sortBy") Optional<String> sortBy,@RequestParam("brand") Optional<String> brand) 
+    public ResponseEntity<PagedModel<DeviceModel>> allDevices(@RequestParam(value="page", required = false) Optional<Integer> page ,@RequestParam(value="sortBy", required = false) Optional<String> sortBy,@RequestParam(value="brand", required = false) Optional<String> brand) 
     {
 		Page<DeviceEntity> deviceEntities = business.allDevices(page, sortBy, brand);
-			
 		PagedModel<DeviceModel> collModel = pagedResourcesAssembler
 								.toModel(deviceEntities, deviceModelAssembler);
-			
 		return new ResponseEntity<>(collModel,HttpStatus.OK);
-    }
-		
+    }	
 
 	@PutMapping("/devices/{id}")
 	public DeviceEntity updateDevice(@RequestBody DeviceEntity newDevice, @PathVariable Long id) {
-
 		return business.updateDevice(newDevice, id);
 	}
 
 	@DeleteMapping("/devices/{id}")
 	void deleteDevice(@PathVariable Long id) {
-	
+		business.getDevice(id).orElseThrow(() -> new DeviceNotFoundException(id));
 		business.deleteDevice(id);
 	}
-
 
 }

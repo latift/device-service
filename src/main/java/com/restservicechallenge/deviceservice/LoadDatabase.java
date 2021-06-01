@@ -20,9 +20,9 @@ class LoadDatabase {
 	@Bean
 	CommandLineRunner initDatabase(DeviceRepository repository) {
 
-		  OffsetDateTime offsetDT1 = OffsetDateTime.of(2020, 1, 1, 20, 15, 45, 345875000, ZoneOffset.of("+00:00"));
+		 OffsetDateTime offsetDT1 = OffsetDateTime.of(2020, 1, 1, 20, 15, 45, 345875000, ZoneOffset.of("+00:00"));
 	      
-	      OffsetDateTime offsetDT2 = OffsetDateTime.of(2019, 1, 1, 20, 15, 45, 345875000, ZoneOffset.of("+00:00"));
+	     OffsetDateTime offsetDT2 = OffsetDateTime.of(2019, 1, 1, 20, 15, 45, 345875000, ZoneOffset.of("+00:00"));
 	        
 		 return args -> {
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim1", "BrandX", offsetDT1)));
@@ -30,24 +30,19 @@ class LoadDatabase {
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim3", "BrandX", offsetDT2)));
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim4", "BrandX", offsetDT2)));
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim5", "BrandY", offsetDT2)));
-			
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim6", "BrandX", offsetDT2)));
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim7", "Ericcson", offsetDT2)));
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim8", "BrandX", offsetDT2)));
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim9", "Ericcson", offsetDT2)));
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim10", "BrandX", offsetDT2)));
-			
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim11", "BrandY", offsetDT2)));
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim12", "BrandY", offsetDT2)));
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim12", "BrandY", offsetDT2)));
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim11", "BrandY", offsetDT2)));
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim12", "BrandY", offsetDT2)));
-			
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim11", "BrandZ", offsetDT2)));
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim12", "BrandZ", offsetDT2)));
 			log.info("Preloading " + repository.save(new DeviceEntity("Sim13", "BrandY", offsetDT2)));
-
-			
 		};
 	}
 }
