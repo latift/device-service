@@ -4,7 +4,7 @@ Code is available on [github](https://github.com/latift/device-service) along wi
 
 ## Prerequisites
 
-* Java(16 Version), Maven, Git, Lombok enabled IDE(Optional), Postman(Optional)
+* Java(11 Version), Maven, Git, Lombok enabled IDE(Optional), Postman(Optional)
 
 ## Clone the Source Code
 
