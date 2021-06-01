@@ -1,0 +1,20 @@
+1. Add device
+	curl -X POST localhost:8080/devices -H 'Content-type:application/json' -d '{"name": "Sim99", "brand": "truphone", "creationTime": "2019-04-09T23:15:45.345875+03:00"}'
+	
+2. Get device by identifier
+	curl -v localhost:8080/devices/1 | json_pp
+
+3. List all devices
+	curl -v localhost:8080/devices | json_pp
+	
+4. Update device (full and partial)
+	curl -X PUT localhost:8080/devices/1 -H 'Content-type:application/json' -d '{"name": "Sim1_Updated", "brand": "truphone", "creationTime": "2019-04-09T23:15:45.345875+03:00"}'
+	
+
+5. Delete a device
+	curl -X DELETE localhost:8080/devices/1
+
+
+6. Search device by brand
+	curl -v localhost:8080/devices?brand=truphone | json_pp
+
