@@ -117,5 +117,4 @@ Click the links below for test purposes.
 * Security : Rest services should be protected against attacks with jwt. For more secure communication, the services should be provided with HTTPs protocol.
 * Cache Layer : Redis-like cache structures should be used for much faster and more performance services. 
 * Versioning : Version change is the most critical issue in Public Rest API services. When a V2.0 version of a service is offered, the v1.0 version should continue to be supported for a long time. In order to offer two versions of the same service at the same time, the version name must be passed in the uri information. Not done here for the sake of simplicity.
-
 	 
